@@ -5,19 +5,19 @@ import RecipeCard from './components/RecipeCard';
 import LoadingState from './components/LoadingState';
 import ErrorState from './components/ErrorState';
 import Navbar from './components/Navbar';
-import { useRecipes, useRecipeSearch } from './hooks/useRecipes';
+import { useRecipeSearch } from './hooks/useRecipes';
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   
-  // Use the appropriate hook based on whether we have a search query
+  // Always call hooks at the top level
   const {
     data: recipes,
     isLoading,
     isError,
     error,
     refetch
-  } = searchTerm ? useRecipeSearch(searchTerm) : useRecipes();
+  } = useRecipeSearch(searchTerm); // Pass searchTerm directly to the hook
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

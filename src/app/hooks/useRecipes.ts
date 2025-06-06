@@ -55,7 +55,12 @@ export function useRecipeSearch(query: string) {
     queryKey: ['recipes', 'search', query],
     queryFn: async (): Promise<Recipe[]> => {
       try {
-        const response = await fetch(`${API_BASE_URL}/search.php?s=${query}`);
+        // If no query, fetch default recipes
+        const endpoint = query.trim() 
+          ? `${API_BASE_URL}/search.php?s=${query}`
+          : `${API_BASE_URL}/search.php?f=b`;
+        
+        const response = await fetch(endpoint);
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -67,8 +72,7 @@ export function useRecipeSearch(query: string) {
         console.error('Error searching recipes:', error);
         throw new Error('Failed to search recipes');
       }
-    },
-    enabled: query.length > 0
+    }
   });
 }
 
